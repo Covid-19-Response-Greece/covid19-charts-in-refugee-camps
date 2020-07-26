@@ -23,18 +23,16 @@ class App extends React.Component {
     this.setState({ selectedCamp });
   };
 
-
-
   render() {
     const { data, camps, selectedCamp } = this.state;
 
     return (
       <div className={styles.container}>
-         <Typography color="textSecondary">
-              Menu
+
+         <Typography color='textSecondary'>
+              Πισώ στην αρχική
             </Typography>
         <h2>Κρούσματα COVID19 ανα δομή φιλοξενίας</h2>
-       
         <CampPicker camps={camps} handleCampChange={this.handleCampChange} />
         
         <Chart
