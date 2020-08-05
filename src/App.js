@@ -30,7 +30,9 @@ class App extends React.Component {
       <div className={styles.container}>
 
          <Typography color='textSecondary'>
-              Πισώ στην αρχική
+         <div>
+<a href="https://camps.covid19response.gr"><img class="alignleft" src="https://devpap.co.uk/wp-content/uploads/2020/07/icon1.png" alt="" width="22" height="22" /></a><a href="https://camps.covid19response.gr">   Πίσω στην Αρχική</a>
+</div>
             </Typography>
         <h2>Κρούσματα COVID19 ανα δομή φιλοξενίας</h2>
         <CampPicker camps={camps} handleCampChange={this.handleCampChange} />
