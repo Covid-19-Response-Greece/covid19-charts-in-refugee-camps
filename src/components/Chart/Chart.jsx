@@ -1,25 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { Line, Bar } from "react-chartjs-2";
+import moment from 'moment'
 
 import styles from "./Chart.module.css";
 
 const Chart = ({ data, selectedCamp }) => {
-  const [selectedCampData, setselectedCampData] = useState();
+  const [selectedCampData, setselectedCampData] = useState([]);
   const [weeklyData, setweeklyData] = useState([]);
 
   useEffect(() => {
-    let selectedData = 0;
+    let cases = []
 
-    if (selectedCamp) {
-      data.forEach((camp) => {
+    if (selectedCamp) { 
+      let selectedData = data.map((camp) => {
         if (camp.name_gr === selectedCamp) {
           camp.recorded_events.forEach((event) => {
-            console.log(event.confirmed_cases);
-            if (event.confirmed_cases) selectedData += event.confirmed_cases;
+            if (event.confirmed_cases){
+              cases.push({case_detection_week: event.case_detection_week, confirmed_cases: event.confirmed_cases})
+            }
           });
         }
       });
-      setselectedCampData(selectedData);
+      setselectedCampData(cases);
+
     } else {
       let recorded_events = data
         .map(({ recorded_events }) => {
@@ -39,38 +42,48 @@ const Chart = ({ data, selectedCamp }) => {
           if(array) return true
           return false
         })
+
+        recorded_events.forEach(event => {
+          event.forEach(item => {
+            let case_detection_week = item.case_detection_week
+            let str = case_detection_week.split("-")
+            const newStr = moment(str[0],"DD/MM/YYYY").format('DD/MM/YYYY') + ' - ' + moment(str[1], "DD/MM/YYYY").format('DD/MM/YYYY')
+            item.case_detection_week = newStr
+          })
+        })
       //remove zero length arrays
-      console.log(recorded_events);
       // const recorded_events_edited = Object.values(recorded_events.reduce((a, b) => { a[b.case_detection_week] = Object.assign(a[b.case_detection_week] || {}, b); return a; }, {}));
       const recorded_events_edited = Object.values([].concat(...recorded_events).reduce((a, {case_detection_week, confirmed_cases}) => {
         a[case_detection_week] = (a[case_detection_week] || {case_detection_week, confirmed_cases: 0});
         a[case_detection_week].confirmed_cases = String(Number(a[case_detection_week].confirmed_cases) + Number(confirmed_cases));
         return a;
       }, {}));
+
+      // recorded_events_edited.sort((a, b) => a.case_detection_week.localeCompare(b.case_detection_week));
+
+      recorded_events_edited.sort(function(a,b){
+        let date1 = a.case_detection_week.split("-")[0]
+        let date2 = b.case_detection_week.split("-")[0]
+        return moment(date1, "DD/MM/YYYY") - moment(date2, "DD/MM/YYYY")
+      });
       setweeklyData(recorded_events_edited)
     }
   }, [data, selectedCamp]);
 
-  const barChart =
-    selectedCamp && selectedCampData !== undefined ? (
-      <Bar
-        data={{
-          labels: ["Αποτελέσματα COVID19 tests"],
-          datasets: [
-            {
-              label: "Βρέθηκαν με COVID19 ΑΤΟΜΑ",
-              backgroundColor: [
-                "rgba(255, 0, 0, 0.5)",
-              ],
-              data: [selectedCampData],
-            },
-          ],
-        }}
-        options={{
-          legend: { display: false },
-          title: { display: true, text: `Τρέχοντα κρούσματα ${selectedCamp}` },
-        }}
-      />
+  const barChart = selectedCampData[0] ? (
+    <Line
+      data={{
+        labels: selectedCampData.map(({ case_detection_week }) => case_detection_week),
+        datasets: [
+          {
+            data: selectedCampData.map((data) => data.confirmed_cases),
+            label: "Βρέθηκαν με COVID19 ΑΤΟΜΑ",
+            borderColor: "rgba(255, 0, 0, 0.5)",
+            fill: true,
+          },
+        ],
+      }}
+    />
     ) : null;
 
   const lineChart = weeklyData[0] ? (
