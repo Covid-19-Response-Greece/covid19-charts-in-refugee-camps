@@ -1,7 +1,3 @@
-
-
-# covid19-charts-in-refuggees-camps
-
 <h2>About the Refugee Camps charts Greece - Covid19 platform</h2>
         <p>Includes:<br></br>
         Evolution of Covid19 cases<br></br>
