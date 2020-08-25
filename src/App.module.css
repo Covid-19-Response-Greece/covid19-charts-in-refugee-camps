@@ -5,6 +5,11 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  font-family: Raleway,sans-serif;
 }
 
 .container {
@@ -26,10 +31,22 @@ footer {
   line-height: 2em;
   color: white;
   text-align: center;
-  background-color: rgb(165, 165, 165);
+  background-color: #a5a5a5;
+}
+
+footer a {
+  color: #256ae9;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+footer a:hover {
+    color: #585858;
+    text-decoration: none;
 }
 
 footer p {
-  font-size: 0.9em;
+  font-weight: 400; 
+  font-size: .9em;
   margin: 0;
 }

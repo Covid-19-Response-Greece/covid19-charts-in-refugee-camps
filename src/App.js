@@ -41,7 +41,6 @@ class App extends React.Component {
           selectedCamp={selectedCamp}
           data={data}
         />
-        <h4>Εβδομαδιαία κατανομή Κρουσμάτων COVID19</h4>
 
         <footer>
           <p>&copy; { new Date().getFullYear() } <a id='pagelink' href="https://www.covid19response.gr/">Covid-19 Response Greece</a></p>
