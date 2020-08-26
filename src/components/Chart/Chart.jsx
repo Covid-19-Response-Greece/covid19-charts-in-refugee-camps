@@ -101,7 +101,7 @@ const Chart = ({ data, selectedCamp }) => {
         datasets: [
           {
             data: selectedCampData.map((data) => data.confirmed_cases),
-            label: "Βρέθηκαν με COVID19 ΑΤΟΜΑ",
+            label: "Κρούσματα Covid19",
             borderColor: "rgba(255, 0, 0, 0.5)",
             fill: true,
           },
@@ -110,7 +110,7 @@ const Chart = ({ data, selectedCamp }) => {
     />
   ) : (
     <span style={{ marginBottom: "35px" }}>
-      Δεν υπάρχουν καταγεγραμμένα κρούσματα στη δομή {selectedCamp}
+      Δεν υπάρχουν καταγεγραμμένα κρούσματα στη δομή {selectedCamp}.
     </span>
   );
 
