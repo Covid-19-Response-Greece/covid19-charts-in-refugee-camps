@@ -27,21 +27,22 @@ class App extends React.Component {
     const { data, camps, selectedCamp } = this.state;
 
     return (
-      <div className={styles.container}>
+      <div className={styles.container_outer}>
+        <div className={styles.container}>
 
-         <Typography color='textSecondary'>
-         <div>
-<a href="https://camps.covid19response.gr"><img class="alignleft" src="https://devpap.co.uk/wp-content/uploads/2020/07/icon1.png" alt="" width="22" height="22" /></a><a href="https://camps.covid19response.gr">   Πίσω στην Αρχική</a>
-</div>
-            </Typography>
-        <h2>Κρούσματα COVID19 ανά δομή φιλοξενίας</h2>
-        <CampPicker camps={camps} handleCampChange={this.handleCampChange} />
-        
-        <Chart
-          selectedCamp={selectedCamp}
-          data={data}
-        />
-
+          <Typography color='textSecondary'>
+          <div>
+  <a href="https://camps.covid19response.gr"><img class="alignleft" src="https://devpap.co.uk/wp-content/uploads/2020/07/icon1.png" alt="" width="22" height="22" /></a><a href="https://camps.covid19response.gr">   Πίσω στην Αρχική</a>
+  </div>
+              </Typography>
+          <h2>Κρούσματα COVID19 ανά δομή φιλοξενίας</h2>
+          <CampPicker camps={camps} handleCampChange={this.handleCampChange} />
+          
+          <Chart
+            selectedCamp={selectedCamp}
+            data={data}
+          />
+        </div>
         <footer>
           <p>&copy; { new Date().getFullYear() } <a id='pagelink' href="https://www.covid19response.gr/">Covid-19 Response Greece</a></p>
         </footer>
