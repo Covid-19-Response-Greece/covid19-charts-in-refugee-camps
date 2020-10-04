@@ -4,9 +4,10 @@ import moment from "moment";
 
 import styles from "./Chart.module.css";
 
-const Chart = ({ data, selectedCamp }) => {
+const Chart = ({ data, selectedCamp, totalCases }) => {
   const [selectedCampData, setselectedCampData] = useState([]);
   const [weeklyData, setweeklyData] = useState([]);
+  const [totalCasesFormated, settotalCasesFormated] = useState([]);
 
   useEffect(() => {
     let cases = [];
@@ -82,6 +83,24 @@ const Chart = ({ data, selectedCamp }) => {
         let date2 = b.case_detection_week.split("-")[0];
         return moment(date1, "DD/MM/YYYY") - moment(date2, "DD/MM/YYYY");
       });
+
+      let cases = new Array(recorded_events_edited.length).fill(0);
+      recorded_events_edited.map(({ case_detection_week }, index) => {
+        const dates = case_detection_week.split("-");
+        const startDate = moment(dates[0], "DD/MM/YYYY");
+        const endDate = moment(dates[1], "DD/MM/YYYY");
+        totalCases.forEach((item) => {
+          const itemDate = moment(item.date, "YYYY-MM-DD");
+          if (
+            itemDate.isBetween(startDate, endDate) ||
+            itemDate.isSame(startDate) ||
+            itemDate.isSame(endDate)
+          ) {
+            cases[index] = cases[index] + item.confirmed;
+          }
+        });
+      });
+      settotalCasesFormated(cases);
       setweeklyData(recorded_events_edited);
     }
   }, [data, selectedCamp]);
@@ -91,7 +110,7 @@ const Chart = ({ data, selectedCamp }) => {
       options={{
         title: {
           display: true,
-          text: `Επιβεβαιωμένα κρούσματα δομής ${selectedCamp}` ,
+          text: `Επιβεβαιωμένα κρούσματα δομής ${selectedCamp}`,
         },
       }}
       data={{
@@ -131,6 +150,12 @@ const Chart = ({ data, selectedCamp }) => {
             data: weeklyData.map((data) => data.confirmed_cases),
             label: "Κρούσματα Covid19",
             borderColor: "red",
+            fill: true,
+          },
+          {
+            data: totalCasesFormated,
+            label: "Συνολικά κρούσματα της χώρας",
+            borderColor: "green",
             fill: true,
           },
         ],
